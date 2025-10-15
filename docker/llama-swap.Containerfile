@@ -1,5 +1,5 @@
-ARG BASE_TAG=server-cuda
-FROM ghcr.io/ggml-org/llama.cpp:${BASE_TAG}
+ARG BASE_TAG=full-rocm-6.3.3
+FROM mixa3607/llama.cpp-gfx906:${BASE_TAG}
 
 # has to be after the FROM
 ARG LS_VER=89
