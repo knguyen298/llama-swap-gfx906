@@ -1,0 +1,28 @@
+name: Build Containers
+
+on:
+  # time has no specific meaning, trying to time it after
+  # the llama.cpp daily packages are published
+  # https://github.com/ggml-org/llama.cpp/blob/master/.github/workflows/docker.yml
+  schedule:
+    - cron: "37 5 * * *"
+
+  # Allows manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run build-container
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+        run: ./docker/build-container.sh
