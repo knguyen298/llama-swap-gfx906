@@ -16,6 +16,11 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Remove unnecessary files
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          
       - name: Checkout code
         uses: actions/checkout@v4
         
@@ -29,3 +34,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
         run: ./docker/build-container.sh
+  delete-untagged-containers:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'llama-swap-gfx906'
+          package-type: 'container'
+          delete-only-untagged-versions: 'true'
