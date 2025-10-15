@@ -25,4 +25,5 @@ jobs:
       - name: Run build-container
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-        run: ./docker/build-container.sh
+        run: ./build-container.sh
+        working-directory: docker
