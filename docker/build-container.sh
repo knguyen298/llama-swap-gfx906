@@ -5,7 +5,7 @@ cd $(dirname "$0")
 sudo mkdir -p /mnt/docker-data
 sudo chmod 777 /mnt/docker-data
 
-dockerd --data-root /mnt/docker-data
+sudo dockerd --data-root /mnt/docker-data
 
 # Check if GITHUB_TOKEN is set and not empty
 if [[ -z "$GITHUB_TOKEN" ]]; then
