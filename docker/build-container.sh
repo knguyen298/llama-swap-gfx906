@@ -2,9 +2,6 @@
 
 cd $(dirname "$0")
 
-ARCH=$1
-PUSH_IMAGES=${2:-false}
-
 # Check if GITHUB_TOKEN is set and not empty
 if [[ -z "$GITHUB_TOKEN" ]]; then
   echo "Error: GITHUB_TOKEN is not set or is empty."
@@ -12,8 +9,6 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
 fi
 
 LS_VER=$(curl -s https://api.github.com/repos/mostlygeek/llama-swap/releases/latest | jq -r .tag_name | sed 's/v//')
-CONTAINER_LATEST="ghcr.io/knguyen298/llama-swap:rocm-6.3.3"
+CONTAINER_LATEST="ghcr.io/knguyen298/llama-swap-gfx906:rocm-6.3.3"
 docker build -f llama-swap.Containerfile --build-arg BASE_TAG=full-rocm-6.3.3 --build-arg LS_VER=${LS_VER} -t ${CONTAINER_LATEST} .
-if [ "$PUSH_IMAGES" == "true" ]; then
-    docker push ${CONTAINER_LATEST}
-fi
+docker push ${CONTAINER_LATEST}
